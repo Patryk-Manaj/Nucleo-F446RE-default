@@ -1,0 +1,15 @@
+# Binary and object files
+*.elf
+*.hex
+*.bin
+*.out
+*.map
+*.a
+*.o
+*.obj
+
+# Build directories
+/build/
+/output/
+/bin/
+/target/
