@@ -1,0 +1,47 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+
+  "configurePresets": [
+    {
+      "name": "debug",
+      "displayName": "Debug (STM32)",
+      "description": "Debug build for STM32F446RE using ARM GCC toolchain",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/arm-gcc-toolchain.cmake",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    }
+  ],
+
+  "buildPresets": [
+    {
+      "name": "build-debug",
+      "displayName": "Build Debug",
+      "configurePreset": "debug",
+      "description": "Build the project in Debug mode",
+      "jobs": 4
+    },
+    {
+      "name": "clean-debug",
+      "displayName": "Clean Debug",
+      "description": "Clean the Debug build directory",
+      "configurePreset": "debug",
+      "targets": ["clean"]
+    },
+    {
+      "name": "flash-debug",
+      "displayName": "Flash Debug",
+      "description": "Flash STM32 using st-flash (Debug build)",
+      "configurePreset": "debug",
+      "targets": ["flash"]
+    }
+  ]
+}
