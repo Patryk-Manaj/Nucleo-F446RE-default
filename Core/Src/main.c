@@ -72,7 +72,8 @@ int main(void)
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
+ uint16_t dupa = 0; 
+ dupa ++;
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
