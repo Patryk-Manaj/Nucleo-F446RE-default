@@ -25,7 +25,7 @@ set(MCU_FLAGS
 
 target_compile_options(${TARGET} PRIVATE
     ${MCU_FLAGS}
-    -Wall -Og -ffunction-sections -fdata-sections -g
+    -Wall -O0 -ffunction-sections -fdata-sections -g
 )
 
 target_compile_definitions(${TARGET} PRIVATE
@@ -62,7 +62,6 @@ set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/STM32F446RETx_FLASH.ld")
 target_link_options(${TARGET} PRIVATE
     ${MCU_FLAGS}
     -T${LINKER_SCRIPT}
-    -specs=nano.specs
     -Wl,--gc-sections
     -Wl,-Map=${TARGET}.map,--cref
 )

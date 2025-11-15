@@ -1,6 +1,6 @@
-/* USER CODE BEGIN Header */
+/* Header */
 /**
-  ******************************************************************************
+ ******************************************************************************
   * @file           : main.c
   * @brief          : Main program body
   ******************************************************************************
@@ -15,96 +15,123 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
+
+
 /* Includes ------------------------------------------------------------------*/
+
 #include "main.h"
 #include <stm32f4xx_hal_rcc.h>
+#include <stdio.h>
 
 /* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
 
-/* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
 
-/* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
 
-/* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
 
-/* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
+
 void SystemClock_Config(void);
-/* USER CODE BEGIN PFP */
+void task1_handler(void);
+void task2_handler(void);
+void task3_handler(void);
+void task4_handler(void);
+void task5_handler(void);
+// void ITM_Init(void)
+// {
+//     // Włącz TRCENA
+//     *((volatile uint32_t*)0xE000EDFC) |= (1 << 24);
 
-/* USER CODE END PFP */
+//     // Odblokuj ITM
+//     *((volatile uint32_t*)0xE0000FB0) = 0xC5ACCE55;
 
+//     // Włącz ITM i port 0
+//     *((volatile uint32_t*)0xE0000E00) = 0x0001000D; // ITMENA | SYNCENA | SWOENA
+//     *((volatile uint32_t*)0xE0000E00 + 0x0) = 1;     // TER port 0
+// }
 /* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
+#include <stdint.h>
 
-/* USER CODE END 0 */
+// Rejestry ITM i debug
+#define ITM_STIMULUS_PORT0  (*((volatile uint32_t*)0xE0000000U))
+#define ITM_TCR             (*((volatile uint32_t*)0xE0000E00U))
+#define ITM_TER             (*((volatile uint32_t*)0xE0000E00U + 0x0))
+#define DEMCR               (*((volatile uint32_t*)0xE000EDFCU))
+#define ITM_LAR             (*((volatile uint32_t*)0xE0000FB0U))
 
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
+// -----------------------------------------------------------------------------
+// Funkcja inicjalizuje ITM i port 0
+// -----------------------------------------------------------------------------
+void ITM_Init(void)
+{
+    // Włącz TRCENA (Debug Exception and Monitor Control)
+    DEMCR |= (1 << 24);
+
+    // Odblokuj ITM
+    ITM_LAR = 0xC5ACCE55;
+
+    // Włącz ITM (ITMENA), synchronizację (SYNCENA) i SWOENA
+    ITM_TCR = 0x0001000D;
+
+    // Włącz port 0
+    ITM_TER = 1;
+}
+
+// -----------------------------------------------------------------------------
+// Funkcja wysyła znak przez port 0 ITM
+// -----------------------------------------------------------------------------
+// void ITM_SendChar(uint8_t ch)
+// {
+//     // Czekaj, aż ITM jest włączone
+//     while ((ITM_TCR & 1) == 0);
+
+//     // Czekaj, aż port 0 gotowy do przyjęcia znaku
+//     while (!(ITM_STIMULUS_PORT0 & 1));
+
+//     // Wyślij znak
+//     ITM_STIMULUS_PORT0 = ch;
+// }
+
+
 int main(void)
 {
-
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
  uint16_t dupa = 0; 
  dupa ++;
+//  ITM_Init();
+
+ITM_Init();
+
+setvbuf(stdout, NULL, _IONBF, 0);  // wyłącz buforowanie to wszystko bylo przez buforowanie xddddd
   /* USER CODE BEGIN Init */
-
   /* USER CODE END Init */
-
+  
   /* Configure the system clock */
   SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
+  
   /* Initialize all configured peripherals */
-  /* USER CODE BEGIN 2 */
-
-  /* USER CODE END 2 */
-
+  
   /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
+    task1_handler();
 
-    /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
+        // Proste opóźnienie
+        for (volatile int j = 0; j < 1000000; j++);}
 }
 
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
@@ -142,9 +169,26 @@ void SystemClock_Config(void)
   }
 }
 
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
+void task1_handler(void)
+{
+  printf("I'm in task 1");
+}
+void task2_handler(void)
+{
+  printf("I'm in task 2");
+}
+void task3_handler(void)
+{
+  printf("I'm in task 3");
+}
+void task4_handler(void)
+{
+  printf("I'm in task 4");
+}
+void task5_handler(void)
+{
+  printf("I'm in task 5");
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.

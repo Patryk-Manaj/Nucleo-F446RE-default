@@ -20,8 +20,16 @@
             "runToMain": true,
             "device": "STM32F446RE",
             "interface": "swd",
-            "gdbPath": "arm-none-eabi-gdb"
+            "gdbPath": "arm-none-eabi-gdb",
+            "swoConfig": {
+                "enabled": true,
+                "cpuFrequency": 16000000,
+                "swoFrequency": 1000000,
+                "source": "probe",
+                "decoders": [
+                    { "port": 0, "label": "ITM", "type": "console" }
+                ]
+            }
         }
-
     ]
 }
